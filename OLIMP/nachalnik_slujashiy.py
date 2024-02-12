@@ -36,6 +36,12 @@ else:
 
 sorted_dict = dict(sorted(dict1.items()))
 
+count2 = 0
+
 for i, j in sorted_dict.items():
     if i > last:
+        count2 = 1
         print(i, sorted_dict.get(i))
+
+if count2 == 0:
+    print("NO")
