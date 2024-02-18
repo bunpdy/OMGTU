@@ -1,47 +1,54 @@
-f = open(r"company1\input_s1_01.txt", "r")
+f = open("C:/Users/bunpdy/PycharmProjects/pythonProject/unic/company1/input_s1_01.txt", "r")
+
 a = f.readlines()
-
-numbers = "0123456789"
-
-last = ""
 ls = []
-copies = []
-
-count = start = 0
-
+last = ""
 for i in a:
-    count += 1
-    last = i
-    if not (len(i.replace("\n", "")) == 4):
-        ls.append(i.replace("\n", ""))
+    if i.strip()[:3] != "END":
+        ls.append((i.strip()[:4] + "!" + i.strip()[5:]).split('!'))
+    last = i.strip()
+
+ls_noname = []
+ls_name = []
+for i in ls[:-1]:
+    if not i[-1]:
+        ls_noname.append(i)
     else:
-        copies.append(i.replace("\n", ""))
+        ls_name.append(i)
+
+ls.clear()
+ls = ls_name + ls_noname
+ls_clear = []
+ls_per = ls
+had = []
+
+for x in ls_per:
+    if x[0] not in had:
+        had.append(x[0])
+        if not x[1]:
+            x[1] = "Unknown Name"
+        ls_clear.append(x)
 
 dict1 = {}
+for i in ls_clear:
+    key = i[0]
+    dict1[key] = i[1]
 
-for i in a:
-    if start < count - 2:
-        if copies.count(i[:4]) == 1:
-            dict1.update({i[:4]: "Unknown Name"})
-    start += 1
+number_of_boss = ""
 
-for i in (ls[:-2]):
-    key = i[:4]
-    dict1[key] = i[5:]
+for i, j in dict1.items():
+    if (i == last) or (j == last):
+        number_of_boss += i
+
+count = 0
+for i, j in dict1.items():
+    if number_of_boss:
+        if int(i) > int(number_of_boss):
+            count = 1
+            print(i, j)
+    else:
+        print("NO")
+        break
 else:
-    if last[0] not in numbers:
-        for i, j in dict1.items():
-            if j == last:
-                last = i
-
-sorted_dict = dict(sorted(dict1.items()))
-
-count2 = 0
-
-for i, j in sorted_dict.items():
-    if i > last:
-        count2 = 1
-        print(i, sorted_dict.get(i))
-
-if count2 == 0:
-    print("NO")
+    if not count:
+        print("NO")
