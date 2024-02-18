@@ -35,7 +35,7 @@ for i in ls_clear:
     dict1[key] = i[1]
 
 number_of_boss = ""
-
+answer = []
 for i, j in dict1.items():
     if (i == last) or (j == last):
         number_of_boss += i
@@ -45,10 +45,13 @@ for i, j in dict1.items():
     if number_of_boss:
         if int(i) > int(number_of_boss):
             count = 1
-            print(i, j)
+            answer.append([i, j])
     else:
         print("NO")
         break
 else:
     if not count:
         print("NO")
+
+for i in sorted(answer):
+    print(i[0], i[1])
