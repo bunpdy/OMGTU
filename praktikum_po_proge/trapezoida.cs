@@ -2,15 +2,14 @@ class TrapezoidalRule {
     public static double Solve(Func<double, double> f, double a, double b, double dx) {
         
         // Решение
-        double start = a;
         double summ = 0.0;
+        double dv = (b - a) / dx;
 
-        while (start < b)
+        for(int i = 0; i < dv; i++)
         {
-            double per = ((f(start) + f(start + dx)) / 2) * dx;
+            double per = ((f((double)i*dx + a) + f((double)i*dx + dx + a)) / 2) * dx;
             summ += per;
 
-            start = start + dx;
         }
         return summ;
     }
