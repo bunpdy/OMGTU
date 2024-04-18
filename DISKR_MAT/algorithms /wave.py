@@ -17,29 +17,30 @@ ls[x_s].insert(y_s, 0)
 
 
 def func(center_x, center_y):
-    if ls[center_x - 1][center_y - 1] != -1:
-        ls[center_x - 1][center_y - 1] = min(ls[center_x - 1][center_y - 1], ls[i][j] + 1)
+    if ls[center_x][center_y] != - 1:
+        if ls[center_x - 1][center_y - 1] != -1:
+            ls[center_x - 1][center_y - 1] = min(ls[center_x - 1][center_y - 1], ls[i][j] + 1)
 
-    if ls[center_x - 1][center_y] != -1:
-        ls[center_x - 1][center_y] = min(ls[center_x - 1][center_y], ls[i][j] + 1)
+        if ls[center_x - 1][center_y] != -1:
+            ls[center_x - 1][center_y] = min(ls[center_x - 1][center_y], ls[i][j] + 1)
 
-    if ls[center_x - 1][center_y + 1] != -1:
-        ls[center_x - 1][center_y + 1] = min(ls[center_x - 1][center_y + 1], ls[i][j] + 1)
+        if ls[center_x - 1][center_y + 1] != -1:
+            ls[center_x - 1][center_y + 1] = min(ls[center_x - 1][center_y + 1], ls[i][j] + 1)
 
-    if ls[center_x][center_y - 1] != -1:
-        ls[center_x][center_y - 1] = min(ls[center_x][center_y - 1], ls[i][j] + 1)
+        if ls[center_x][center_y - 1] != -1:
+            ls[center_x][center_y - 1] = min(ls[center_x][center_y - 1], ls[i][j] + 1)
 
-    if ls[center_x][center_y + 1] != -1:
-        ls[center_x][center_y + 1] = min(ls[center_x][center_y + 1], ls[i][j] + 1)
+        if ls[center_x][center_y + 1] != -1:
+            ls[center_x][center_y + 1] = min(ls[center_x][center_y + 1], ls[i][j] + 1)
 
-    if ls[center_x + 1][center_y - 1] != -1:
-        ls[center_x + 1][center_y - 1] = min(ls[center_x + 1][center_y - 1], ls[i][j] + 1)
+        if ls[center_x + 1][center_y - 1] != -1:
+            ls[center_x + 1][center_y - 1] = min(ls[center_x + 1][center_y - 1], ls[i][j] + 1)
 
-    if ls[center_x + 1][center_y] != -1:
-        ls[center_x + 1][center_y] = min(ls[center_x + 1][center_y], ls[i][j] + 1)
+        if ls[center_x + 1][center_y] != -1:
+            ls[center_x + 1][center_y] = min(ls[center_x + 1][center_y], ls[i][j] + 1)
 
-    if ls[center_x + 1][center_y + 1] != -1:
-        ls[center_x + 1][center_y + 1] = min(ls[center_x + 1][center_y + 1], ls[i][j] + 1)
+        if ls[center_x + 1][center_y + 1] != -1:
+            ls[center_x + 1][center_y + 1] = min(ls[center_x + 1][center_y + 1], ls[i][j] + 1)
 
 
 while ls[x_end][y_end] == inf:
