@@ -38,7 +38,8 @@ while p != from_point:
                 if ls[i] + matrix[i][j] == ls[p]:
                     vertex.append(i)
                     p = i
-                    flag = True
+                    if p == from_point:
+                        flag = True
         
                 
 print(vertex[::-1], "Путь включает в себя вершину старта и конца")
