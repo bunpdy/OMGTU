@@ -15,11 +15,18 @@ ls = [Inf, Inf, Inf, Inf, Inf]
 ls.pop(from_point)
 ls.insert(from_point, 0)
 
+flag = 0
 for t in range(len(matrix) - 1):
+    flag = 0
     for i in range(len(matrix)):
         for j in range(len(matrix)):
             if ls[j] > matrix[i][j] + ls[i]:
                 ls[j] = matrix[i][j] + ls[i]
+                      flag = 1
+if flag:
+    print("В графе есть отрицательный цикл")
+else:
+    print("В графе нет отрицательных циклов")
                 
 print(ls)
 print(f"Минимальное расстояние м/у вершинами {from_point} и {to_point} = {ls[to_point]}")
