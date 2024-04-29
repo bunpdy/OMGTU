@@ -42,3 +42,19 @@ sw.Stop();
 
 Console.WriteLine($"Time spent: {sw.Elapsed}");
 Console.WriteLine($"result line: {sb}");
+
+////////////////////////////////////////
+
+using System.Text.RegularExpressions;
+
+string pattern = @"(([01][0-9]|[2][0-3])\:([0-5][0-9]))";
+
+Regex rg = new Regex(pattern);  
+  
+string time = "dwad00:00dwad23:14";  
+MatchCollection matchedTimes = rg.Matches(time);  
+ 
+foreach (Match match in Regex.Matches(time, pattern, RegexOptions.IgnoreCase))
+      Console.WriteLine("{0} at position {2}",
+                           match.Value, match.Groups[1].Value, match.Index);
+
