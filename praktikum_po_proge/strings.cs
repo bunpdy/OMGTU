@@ -62,13 +62,23 @@ Console.WriteLine($"result line: {value}");
 
 using System.Text.RegularExpressions;
 
-string pattern = @"^(([01][0-9]|[2][0-3])\:([0-5][0-9]))$";
+string pattern = @"^([A-z-.0-9]+)[^..]@([A-z-.0-9]+)[^..]\.[A-z-.0-9][^..]{1,}";
 
 Regex rg = new Regex(pattern);  
   
-string time = "23:14";  
-MatchCollection matchedTimes = rg.Matches(time);  
+string mail = "PeTrov.19_72.wo-rk@gmail.com.ua";  
+MatchCollection matchedTimes = rg.Matches(mail);  
  
-foreach (Match match in Regex.Matches(time, pattern, RegexOptions.IgnoreCase))
-      Console.WriteLine("{0} at position {2}",
-                           match.Value, match.Groups[1].Value, match.Index);
+foreach (Match match in Regex.Matches(mail, pattern))
+{
+    if (match.Value == mail)
+    {
+        Console.WriteLine("True\n");
+        Console.WriteLine(mail);
+    }
+    else
+    {
+        Console.WriteLine("False");
+        break;
+    }
+}
