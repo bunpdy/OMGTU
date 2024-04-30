@@ -19,6 +19,7 @@ Console.WriteLine(result); // center space is not cut
 
 using System.Diagnostics;
 var sw = new Stopwatch();
+var sw2 = new Stopwatch();
 
 static string symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static Random r = new Random();
@@ -40,8 +41,22 @@ for (int i = 0; i < 1000000; i++)
 
 sw.Stop();
 
+sw2.Start();
+
+for (int i = 0; i < 6; i++)
+{
+    int ind = i % 10;
+    value = value.Remove(ind, 1).Insert(ind, GetRandomChar().ToString());
+}
+sw2.Stop();
+
+Console.WriteLine("StringBuilder:");
 Console.WriteLine($"Time spent: {sw.Elapsed}");
-Console.WriteLine($"result line: {sb}");
+Console.WriteLine($"result line: {sb} \n");
+
+Console.WriteLine("Direct string conversion:");
+Console.WriteLine($"Time spent: {sw2.Elapsed}");
+Console.WriteLine($"result line: {value}");
 
 ////////////////////////////////////////
 
