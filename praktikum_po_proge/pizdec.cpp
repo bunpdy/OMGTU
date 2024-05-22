@@ -17,7 +17,7 @@ void setColor(int color) { // Перенесена функция setColor за 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-int graphic_splash() 
+int graphic_splash()
 { // графическая заставка
 	int Return;
 	std::cout << "Нажмите любую клавишу для запуска графической анимации." << std::endl;
@@ -62,65 +62,7 @@ back:
 	default: printf("Такого варианта нет!\n"); goto back;
 	}
 }
-float Min(float F[], int n, float* max) { // минимум максимум
-	float min = F[1];
-	*max = F[1];
-	for (int i = 0; i < n; i++) {
-		if (min > F[i]) min = F[i];
-		if (*max < F[i]) *max = F[i];
-	}
-	return min;
-}
 
-void Max(float arr[], int size, float* maxVal)
-{// максимальный элемент массива
-	*maxVal = arr[0];
-	for (int i = 1; i < size; i++) {
-		if (arr[i] > *maxVal) {
-			*maxVal = arr[i];
-		}
-	}
-
-}
-
-
-int Chart() { // График
-	float y1, y2, dx;
-	int a = -1, b = 5, n = 15;
-	float F1[15], F2[15], X[15];
-	int Return, x0 = 950, y0 = 480;
-	WORD nSize; TCHAR str[100];
-	system("cls");
-	HWND hWnd = FindWindowA("ConsoleWindowClass", NULL);
-	HDC hdc = GetDC(hWnd);
-	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-	HPEN penPurple = CreatePen(PS_SOLID, 1, RGB(249, 37, 168)); // фиолетовая кисть
-	HPEN penGreen = CreatePen(PS_SOLID, 1, RGB(41, 255, 123)); // зеленый кисть
-	SelectObject(hdc, GetStockObject(WHITE_PEN));
-	MoveToEx(hdc, 0, y0 / 2, NULL); // рисование оси X
-	LineTo(hdc, x0, y0 / 2);
-	MoveToEx(hdc, x0 / 2, 0, NULL); // рисование оси Y
-	LineTo(hdc, x0 / 2, y0);
-	nSize = wsprintf(str, L"y(x) = 4*e^-|x| - 1");
-	TextOut(hdc, x0 / 2 + x0 / 30 * X[3] + 10, y0 / 2 - x0 / 30 * F1[2] - 20, str, nSize);
-	nSize = wsprintf(str, L"y(x) = cos(x)");
-	TextOut(hdc, x0 / 2 + x0 / 30 * X[14], y0 / 2 - x0 / 30 * F2[14] - 20, str, nSize);
-	nSize = wsprintf(str, L"x");
-	TextOut(hdc, x0 - 5, y0 / 2 + 5, str, nSize);
-	nSize = wsprintf(str, L"y");
-	TextOut(hdc, x0 / 2 + 5, 5, str, nSize);
-	for (int i = 0; i < n - 1; i++)
-	{
-		SelectObject(hdc, penPurple);
-		MoveToEx(hdc, x0 / 2 + x0 / 30 * X[i], y0 / 2 - x0 / 30 * F1[i], NULL); // рисование F1
-		LineTo(hdc, x0 / 2 + x0 / 30 * X[i + 1], y0 / 2 - x0 / 30 * F1[i + 1]);
-		SelectObject(hdc, penGreen);
-		MoveToEx(hdc, x0 / 2 + x0 / 30 * X[i], y0 / 2 - x0 / 30 * F2[i], NULL); // рисование F2
-		LineTo(hdc, x0 / 2 + x0 / 30 * X[i + 1], y0 / 2 - x0 / 30 * F2[i + 1]);
-	}
-	while (_getch() != 13);
-	return 0;
-}
 
 int author() {// Об авторе
 	int Return;
@@ -255,7 +197,7 @@ int calender()
 		int exxit = 1;
 		std::cout << "Введите 0 для выхода или 1 для продолжения:";
 		std::cin >> exxit;
-		if (exxit == 0) 
+		if (exxit == 0)
 		{
 			break;
 		}
