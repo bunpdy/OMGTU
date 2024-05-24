@@ -4,9 +4,141 @@
 #include <math.h>
 #include <Windows.h>
 #include <conio.h>
+#include <iostream>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+
+int main(); 
+
+struct Song {
+	std::string artist;
+	std::string track;
+	std::string genre;
+};
+
+std::vector<Song> readSongsFromFile(const std::string& filename) {
+	std::vector<Song> songs;
+	std::ifstream file(filename);
+	std::string line;
+	while (std::getline(file, line)) {
+		size_t pos1 = line.find('-');
+		size_t pos2 = line.find('-', pos1 + 1);
+		if (pos1 != std::string::npos && pos2 != std::string::npos) {
+			songs.push_back({ line.substr(0, pos1), line.substr(pos1 + 1, pos2 - pos1 - 1), line.substr(pos2 + 1) });
+		}
+	}
+	return songs;
+}
+
+void writeSongToFile(const Song& song) {
+	std::ofstream file("songs.txt", std::ios_base::app);
+	file << song.artist << "-" << song.track << "-" << song.genre << std::endl;
+}
+
+void displayGenres(const std::vector<Song>& songs) {
+	std::set<std::string> genres;
+	for (const auto& song : songs) {
+		genres.insert(song.genre);
+	}
+	std::cout << "Доступные жанры:" << std::endl;
+	for (const auto& genre : genres) {
+		std::cout << "  - " << genre << std::endl;
+	}
+}
+
+void displayArtistsByGenre(const std::vector<Song>& songs, const std::string& chosenGenre) {
+	std::set<std::string> artists;
+	for (const auto& song : songs) {
+		if (song.genre == chosenGenre) {
+			artists.insert(song.artist);
+		}
+	}
+	std::cout << "Исполнители в жанре '" << chosenGenre << "':" << std::endl;
+	for (const auto& artist : artists) {
+		std::cout << "  - " << artist << std::endl;
+	}
+}
 
 
-int main();
+void addArtistAndTrack(std::vector<Song>& songs) {
+	std::string artist, track, genre;
+	std::cout << "Введите имя исполнителя: ";
+	std::getline(std::cin, artist);
+	std::cout << "Введите название трека: ";
+	std::getline(std::cin, track);
+	std::cout << "Введите жанр: ";
+	std::getline(std::cin, genre);
+	std::cout << "\nИсполнитель добавлен\n";
+	Song newSong = { artist, track, genre };
+	songs.push_back(newSong);
+	writeSongToFile(newSong);
+}
+
+void addTrackToExistingArtist(std::vector<Song>& songs, const std::string& artist, const std::string& genre) {
+	std::string track;
+	std::cout << "Введите название трека: ";
+	std::getline(std::cin, track);
+	std::cout << "\nТрек добавлен\n";
+
+	Song newSong = { artist, track, genre };
+	songs.push_back(newSong);
+	writeSongToFile(newSong);
+}
+
+void displayTracksByArtist(const std::vector<Song>& songs, const std::string& chosenArtist) {
+	std::cout << "Треки исполнителя '" << chosenArtist << "':" << std::endl;
+	for (const auto& song : songs) {
+		if (song.artist == chosenArtist) {
+			std::cout << "  - " << song.track << " (" << song.genre << ")" << std::endl;
+		}
+	}
+}
+
+
+int sprava() {
+	setlocale(LC_ALL, ""); // Установка локали для поддержки русского языка
+	std::vector<Song> songs = readSongsFromFile("songs.txt");
+
+	displayGenres(songs);
+
+	std::string chosenGenre;
+	std::cout << "Выберите жанр: ";
+	std::getline(std::cin, chosenGenre);
+
+	std::cout << "Выберите действие:\n1. Добавить исполнителя\n2. Выбрать существующего исполнителя\n3. Просмотреть треки исполнителя\n";
+	int action;
+	std::cin >> action;
+	std::cin.ignore(); // Очистка потока ввода
+
+	if (action == 1) {
+		addArtistAndTrack(songs);
+	}
+	else if (action == 2) {
+		displayArtistsByGenre(songs, chosenGenre);
+		std::string chosenArtist;
+		std::cout << "Выберите исполнителя: ";
+		std::getline(std::cin, chosenArtist);
+
+		addTrackToExistingArtist(songs, chosenArtist, chosenGenre);
+	}
+	else if (action == 3) {
+		std::string chosenArtist;
+		std::cout << "Введите имя исполнителя для просмотра треков: ";
+		std::getline(std::cin, chosenArtist);
+
+		displayTracksByArtist(songs, chosenArtist);
+	}
+	else {
+		std::cout << "Неверный выбор.\n";
+	}
+
+	return 0;
+}
+
 
 void SetColor(int text, int background) {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -84,14 +216,18 @@ void printMenu()
 	SetConsoleCursorPosition(handle, { 43, 10 });
 	printf("Главное меню\n");
 	SetConsoleCursorPosition(handle, { 35, 14 });
-	printf("4) Календарь");
+	printf("3) Календарь");
 	SetConsoleCursorPosition(handle, { 35, 15 });
-	printf("5) Графическая заставка");
+	printf("4) Графическая заставка");
+
 	SetConsoleCursorPosition(handle, { 35, 16 });
-	printf("6) Информация Об авторе");
+	printf("5) Справочник");
+
 	SetConsoleCursorPosition(handle, { 35, 17 });
-	printf("0) Выход");
+	printf("6) Информация Об авторе");
 	SetConsoleCursorPosition(handle, { 35, 18 });
+	printf("0) Выход");
+	SetConsoleCursorPosition(handle, { 35, 19 });
 }
 
 void print_week(int[], int);
@@ -316,6 +452,9 @@ int main()
 				std::cout << "Графическая заставка" << std::endl;
 				break;
 			case 4:
+				std::cout << "Справ" << std::endl;
+				break;
+			case 5:
 				std::cout << "Выход" << std::endl;
 				break;
 			}
@@ -346,6 +485,9 @@ int main()
 				graphic_splash();
 				break;
 			case 4:
+				sprava();
+				break;
+			case 5:
 				system("cls");
 				exit(0);
 				break;
@@ -353,3 +495,4 @@ int main()
 		}
 	}
 }
+
