@@ -1,7 +1,11 @@
-class Program
+using System;
+using System.Collections.Generic;
+
+
+class Program1
 {
-    private List<string> first_input = [];
-    private List<int> stack = [];
+    private List<string> first_input = new List<string>();
+    private List<int> stack = new List<int>();
     private int element;
     private string el1;
     private string el2;
@@ -10,7 +14,7 @@ class Program
     public bool SolveOfProblem(string ls) 
     {
 
-        List<string> stack = [];
+        List<string> stack = new List<string>();
         int length_stack = 0;
 
         for (int i = 0; i < ls.Length; i++) 
@@ -55,6 +59,7 @@ class Program
         }
         else
         {
+            Console.WriteLine("Ответ:");
             PrintStack();
         }
     }
@@ -127,7 +132,8 @@ class Program
 
     public void Run()
     {
-        string start = "23+";
+        Console.WriteLine("Введите обратную польскую запись:");
+        string start = Console.ReadLine();
         for (int i = 0; i < start.Length; i++) 
         {   
             first_input.Add(start[i].ToString());
@@ -192,6 +198,48 @@ class Program
     }
 }
 
-Program program1 = new();
-program1.Run();
 
+class HelloWorld 
+{
+  static void Main() 
+  {
+    bool circle = true;
+    while (circle)
+    {
+        Program1 program1 = new Program1();
+        
+        Console.WriteLine("Выберите действие:");
+        Console.WriteLine("0. Расстановка скобок в выражении");
+        Console.WriteLine("1. Значение выражения в обратной польской записи");
+        Console.WriteLine("2. Об авторе");
+        Console.WriteLine("3. Выход");
+        
+        string chooise = Console.ReadLine();
+        switch (chooise)
+        {
+            case "0":
+                Console.WriteLine("Введите выражение: ");
+                string ustal_pisat_code = Console.ReadLine();
+                bool result = program1.SolveOfProblem(ustal_pisat_code);
+                Console.WriteLine(result);
+                break;
+            case "1":
+                program1.Run();
+                break;
+            case "2":
+                Console.WriteLine("Кириченко Иван Васильевич МО-231");
+                break;
+            case "3":
+                circle = false;
+                break;
+            default:
+                if (!("0123".Contains(chooise)))
+                {
+                    Console.WriteLine("Неправильно введен номер");
+                }
+                break;
+        }
+        Console.WriteLine("\n\n");
+    }
+  }
+}
