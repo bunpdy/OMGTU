@@ -11,28 +11,31 @@ class Program1
     private string el2;
     private int UncorrectNumber;
 
-    public bool SolveOfProblem(string ls) 
+    public bool SolveOfProblem(string ls)
     {
 
         List<string> stack = new List<string>();
         int length_stack = 0;
 
-        for (int i = 0; i < ls.Length; i++) 
+        for (int i = 0; i < ls.Length; i++)
         {
-            stack.Add(ls[i].ToString());
-            length_stack = stack.Count;
-
-            if (length_stack > 1) 
+            if ("{}[]()".Contains(ls[i].ToString()))
             {
-                bool step1 = ((stack[length_stack - 2] + stack[length_stack - 1]) == "{}");
-                bool step2 = ((stack[length_stack - 2] + stack[length_stack - 1]) == "[]");
-                bool step3 = ((stack[length_stack - 2] + stack[length_stack - 1]) == "()");
+                stack.Add(ls[i].ToString());
+                length_stack = stack.Count;
 
-                if (step1 | step2 | step3) 
+                if (length_stack > 1)
                 {
-                    stack.RemoveAt(length_stack - 2);
-                    length_stack = stack.Count;
-                    stack.RemoveAt(length_stack - 1);
+                    bool step1 = ((stack[length_stack - 2] + stack[length_stack - 1]) == "{}");
+                    bool step2 = ((stack[length_stack - 2] + stack[length_stack - 1]) == "[]");
+                    bool step3 = ((stack[length_stack - 2] + stack[length_stack - 1]) == "()");
+
+                    if (step1 | step2 | step3)
+                    {
+                        stack.RemoveAt(length_stack - 2);
+                        length_stack = stack.Count;
+                        stack.RemoveAt(length_stack - 1);
+                    }
                 }
             }
         }
@@ -41,27 +44,22 @@ class Program1
 
     bool StringIsDigits(string sstr)
     {
-    foreach(var item in sstr)
-    {
-        if(!char.IsDigit(item))
+        foreach (var item in sstr)
         {
-            return false;
+            if (!char.IsDigit(item))
+            {
+                return false;
+            }
         }
-    }
-    return true; 
+        return true;
     }
 
     public void Conclusion()
     {
-        if (UncorrectNumber > 0 || stack.Count != 1)
-        {
-            UncorrectNotation();
-        }
-        else
-        {
-            Console.WriteLine("Ответ:");
-            PrintStack();
-        }
+
+        Console.WriteLine("Ответ:");
+        PrintStack();
+        
     }
 
     public void UncorrectNotation()
@@ -95,8 +93,9 @@ class Program1
 
     public void ReloadStack(int NumberForStack)
     {
-        stack.Clear();
-        stack.Add(NumberForStack);
+        stack.Remove(stack[^2]);
+        stack.Remove(stack[^1]);
+        stack.Insert(0, NumberForStack);
     }
 
     public void AddInStack(string par)
@@ -106,13 +105,11 @@ class Program1
 
     public void PrintStack()
     {
-        if (stack.Count == 1){
-            foreach (var el in stack) 
-            {
-                Console.WriteLine(el);
-            }
+        if (stack.Count == 1)
+        {
+            Console.WriteLine(stack[0]);
         }
-        else
+        else 
         {
             UncorrectNotation();
         }
@@ -133,113 +130,112 @@ class Program1
     public void Run()
     {
         Console.WriteLine("Введите обратную польскую запись:");
+
         string start = Console.ReadLine();
-        for (int i = 0; i < start.Length; i++) 
-        {   
+
+        for (int i = 0; i < start.Length; i++)
+        {
             first_input.Add(start[i].ToString());
         }
 
-        foreach (var s in first_input) 
+        foreach (var s in first_input)
         {
             if (!char.IsDigit(Convert.ToChar(s)))
             {
                 switch (s)
                 {
                     case "+":
-                        if (CheckForCorrectNotation())
-                        {
-                            element = stack[0] + stack[1];
-                            ReloadStack(element);
-                        }
+
+                        element = stack[^2] + stack[^1];
+                        ReloadStack(element);
                         break;
                     case "-":
-                        if (CheckForCorrectNotation())
-                        {
-                            element = stack[0] - stack[1];
-                            ReloadStack(element);
-                        }
+
+                        element = stack[^2] - stack[^1];
+                        ReloadStack(element);
+                        
                         break;
                     case "/":
-                        if ((CheckDevByZero(stack[1]) == false) & CheckForCorrectNotation())
+
+                        if ((CheckDevByZero(stack[^1]) == false))
                         {
-                            element = stack[0] / stack[1];
+                            element = stack[^2] / stack[^1];
                             ReloadStack(element);
                         }
                         else
-                        {   
-                            if (CheckDevByZero(stack[1]))
+                        {
+                            if (CheckDevByZero(stack[^1]))
                             {
                                 throw new Exception("Нельзя делить на 0!");
                             }
                         }
                         break;
                     case "*":
-                        if (CheckForCorrectNotation())
-                        {
-                            element = stack[0] * stack[1];
-                            ReloadStack(element);
-                        }
+   
+                        element = stack[^2] * stack[^1];
+                        ReloadStack(element);
+                        
                         break;
                     default:
-                        if (!("+-*/".Contains(s)))
+                        if (!("+-/* ".Contains(s))) 
                         {
                             UncorrectNotation();
                             return;
                         }
-                    break;
+                        break;
                 }
             }
             else
-            {
+            {   
                 AddInStack(s);
             }
         }
-        Conclusion();
+        PrintStack();
     }
 }
 
 
-class HelloWorld 
+class HelloWorld
 {
-  static void Main() 
-  {
-    bool circle = true;
-    while (circle)
+    static void Main()
     {
-        Program1 program1 = new Program1();
-        
-        Console.WriteLine("Выберите действие:");
-        Console.WriteLine("0. Расстановка скобок в выражении");
-        Console.WriteLine("1. Значение выражения в обратной польской записи");
-        Console.WriteLine("2. Об авторе");
-        Console.WriteLine("3. Выход");
-        
-        string chooise = Console.ReadLine();
-        switch (chooise)
+        bool circle = true;
+        while (circle)
         {
-            case "0":
-                Console.WriteLine("Введите выражение: ");
-                string ustal_pisat_code = Console.ReadLine();
-                bool result = program1.SolveOfProblem(ustal_pisat_code);
-                Console.WriteLine(result);
-                break;
-            case "1":
-                program1.Run();
-                break;
-            case "2":
-                Console.WriteLine("Кириченко Иван Васильевич МО-231");
-                break;
-            case "3":
-                circle = false;
-                break;
-            default:
-                if (!("0123".Contains(chooise)))
-                {
-                    Console.WriteLine("Неправильно введен номер");
-                }
-                break;
+            Program1 program1 = new Program1();
+
+            Console.WriteLine("Выберите действие:");
+            Console.WriteLine("0. Расстановка скобок в выражении");
+            Console.WriteLine("1. Значение выражения в обратной польской записи");
+            Console.WriteLine("2. Об авторе");
+            Console.WriteLine("3. Выход");
+
+            string chooise = Console.ReadLine();
+            switch (chooise)
+            {
+                case "0":
+                    Console.WriteLine("Введите выражение: ");
+                    string ustal_pisat_code = Console.ReadLine();
+                    bool result = program1.SolveOfProblem(ustal_pisat_code);
+                    Console.WriteLine(result);
+                    break;
+                case "1":
+                    program1.Run();
+                    break;
+                case "2":
+                    Console.WriteLine("Кириченко Иван Васильевич МО-231");
+                    break;
+                case "3":
+                    circle = false;
+                    break;
+                default:
+                    if (!("0123".Contains(chooise)))
+                    {
+                        Console.WriteLine("Неправильно введен номер");
+                    }
+                    break;
+            }
+            Console.WriteLine("\n\n");
         }
-        Console.WriteLine("\n\n");
     }
-  }
 }
